@@ -1,3 +1,6 @@
+## Github API GraphQL
+https://docs.github.com/ru/graphql/overview/about-the-graphql-api
+
 ## Technical requirements
 - localization (at least 2 languages). You should be able to change the language by clicking on the toggler/select in header.
 - semantic layout
