@@ -1,6 +1,6 @@
 import React, {ReactNode, useState} from 'react';
-import {Breadcrumb, Button, Layout, Menu, Space, theme} from "antd";
-import {Content, Footer, Header} from "antd/lib/layout/layout";
+import {Button, Card, Form, Input, Layout, Space} from "antd";
+import {Content, Header} from "antd/lib/layout/layout";
 import {useNavigate} from "react-router-dom";
 
 interface Props {
@@ -14,9 +14,40 @@ export const PageHeader = ({ children }: Props) => {
     const STANDARD_COLOR = 'Indigo';
     const SCROLL_COLOR = 'Blue';
     const STANDARD_HEADER_HEIGHT = '70px';
-    const SCROLL_HEADER_HEIGHT = '50px';
+    const SCROLL_HEADER_HEIGHT = '51px';
     const [headerColor, setHeaderColor] = useState(STANDARD_COLOR);
     const [headerHeight, setHeaderHeight] = useState(STANDARD_HEADER_HEIGHT);
+    const [signInIsOpen, setSignInIsOpen] = useState(false);
+    const [signUpIsOpen, setSignUpIsOpen] = useState(false);
+
+    const signInElement = () => {
+        return (
+            <div style={{ position: 'fixed', zIndex: 2, bottom: '73%', left: '85%' }}>
+                <Card style={{ width: '300px', height: '200px', display: 'flex', justifyContent: 'center', zIndex: 1, backgroundColor: headerColor, borderColor: headerColor}}>
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                        <h1>Authorization</h1>
+                        <Input status='' placeholder="Email" />
+                        <Input status='' placeholder="Password" />
+                    </Space>
+                </Card>
+            </div>
+
+        )
+    }
+
+    const signUpElement = () => {
+        return (
+            <div style={{ position: 'fixed', zIndex: 2, bottom: '73%', left: '85%' }}>
+                <Card style={{ width: '300px', height: '200px', display: 'flex', justifyContent: 'center', zIndex: 1, backgroundColor: headerColor, borderColor: headerColor}}>
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                        <h1>Registration</h1>
+                        <Input status='' placeholder="Email" />
+                        <Input status='' placeholder="Password" />
+                    </Space>
+                </Card>
+            </div>
+        )
+    }
 
     const changeColor = () => {
         if (window.scrollY >= 60) {
@@ -48,7 +79,9 @@ export const PageHeader = ({ children }: Props) => {
                         <Button
                             ghost
                             onClick={() => {
-                                navigate('/sign');
+                                if (signUpIsOpen) setSignUpIsOpen(false)
+                                if (signInIsOpen) setSignInIsOpen(false);
+                                if (!signInIsOpen) setSignInIsOpen(true);
                             }}
                         >
                             Sign In
@@ -56,7 +89,9 @@ export const PageHeader = ({ children }: Props) => {
                         <Button
                             ghost
                             onClick={() => {
-                                navigate('/sign');
+                                if (signInIsOpen) setSignInIsOpen(false)
+                                if (signUpIsOpen) setSignUpIsOpen(false);
+                                if (!signUpIsOpen) setSignUpIsOpen(true);
                             }}
                         >
                             Sign Up
@@ -67,6 +102,8 @@ export const PageHeader = ({ children }: Props) => {
             <Content style={{ background: 'white', padding: '0 50px' }}>
                 <div className="site-layout-content" style={{ background: "white" }}>
                     {children}
+                    {signInIsOpen ? signInElement() : ''}
+                    {signUpIsOpen ? signUpElement() : ''}
                 </div>
             </Content>
         </Layout>
