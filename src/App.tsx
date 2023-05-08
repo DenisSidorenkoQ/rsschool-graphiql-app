@@ -4,15 +4,18 @@ import { Main } from './pages/Main';
 import { Welcome } from './pages/Welcome/Welcome';
 import { Sign } from './pages/Sign';
 import './App.css';
+import {PageHeader} from "./components/PageHeader";
 
 const App = () => {
   return (
     <div className="App">
-      <Routes>
-        <Route path={'/'} element={<Welcome />} />
-        <Route path={'/main'} element={<Main />} />
-        <Route path={'/sign'} element={<Sign />} />
-      </Routes>
+      <PageHeader>
+        <Routes>
+          <Route path={'/'} element={<Welcome />} />
+          <Route path={'/main'} element={<Main />} />
+          <Route path={'/sign'} element={<Sign />} />
+        </Routes>
+      </PageHeader>
     </div>
   );
 };
