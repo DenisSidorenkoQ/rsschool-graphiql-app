@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Button, Card, Input, Layout, Space } from 'antd';
+import {Alert, Button, Card, Input, Layout, Space} from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import { useNavigate } from 'react-router-dom';
 import { InputStatus } from 'antd/es/_util/statusUtils';
@@ -16,6 +16,8 @@ export const PageHeader = ({ children }: Props) => {
   const SCROLL_COLOR = 'Blue';
   const STANDARD_HEADER_HEIGHT = '70px';
   const SCROLL_HEADER_HEIGHT = '51px';
+  const PASSWORD_ERROR_MESSAGE = 'Minimum 8 symbols, at least one letter, one digit, one special character';
+  const EMAIL_ERROR_MESSAGE = 'Incorrect email address';
   const PASSWORD_REGEXP = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const EMAIL_REGEXP =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
@@ -34,6 +36,8 @@ export const PageHeader = ({ children }: Props) => {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+
+  const [passwordErrorMessageIsVisible, setPasswordErrorMessageIsVisible] = useState(false);
 
   useEffect(() => {
     setSignInPasswordStatus('');
@@ -122,12 +126,28 @@ export const PageHeader = ({ children }: Props) => {
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignInEmail}
             />
+            {signInEmailStatus !== '' &&
+                <Alert
+                    message={EMAIL_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '85px'}}
+                />
+            }
             <Input
               status={signInPasswordStatus}
               placeholder="Password"
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignInPassword}
             />
+            {signInPasswordStatus !== '' &&
+                <Alert
+                    message={PASSWORD_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '85px'}}
+                />
+            }
             <Button type="primary" onClick={signInSubmit}>
               Submit
             </Button>
@@ -155,12 +175,28 @@ export const PageHeader = ({ children }: Props) => {
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpEmail}
             />
+            {signUpEmailStatus !== '' &&
+                <Alert
+                    message={EMAIL_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '85px'}}
+                />
+            }
             <Input
               status={signUpPasswordStatus}
               placeholder="Password"
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpPassword}
             />
+            {signUpPasswordStatus !== '' &&
+                <Alert
+                    message={PASSWORD_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '85px'}}
+                />
+            }
             <Button type="primary" onClick={signUpSubmit}>
               Submit
             </Button>
