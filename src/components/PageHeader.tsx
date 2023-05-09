@@ -16,7 +16,7 @@ export const PageHeader = ({ children }: Props) => {
   const SCROLL_COLOR = 'Blue';
   const STANDARD_HEADER_HEIGHT = '70px';
   const SCROLL_HEADER_HEIGHT = '51px';
-  const PASSWORD_ERROR_MESSAGE = 'Minimum 8 symbols, at least one letter, one digit, one special character';
+  const PASSWORD_ERROR_MESSAGE = 'Minimum 8 symbols \nAt least one letter, one digit, one special character';
   const EMAIL_ERROR_MESSAGE = 'Incorrect email address';
   const PASSWORD_REGEXP = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const EMAIL_REGEXP =
@@ -36,8 +36,6 @@ export const PageHeader = ({ children }: Props) => {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
-
-  const [passwordErrorMessageIsVisible, setPasswordErrorMessageIsVisible] = useState(false);
 
   useEffect(() => {
     setSignInPasswordStatus('');
@@ -110,7 +108,7 @@ export const PageHeader = ({ children }: Props) => {
 
   const signInElement = () => {
     return (
-      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
         <Card
           style={{
             backgroundColor: headerColor,
@@ -131,7 +129,7 @@ export const PageHeader = ({ children }: Props) => {
                     message={EMAIL_ERROR_MESSAGE}
                     type="error"
                     showIcon
-                    style={{height: '85px'}}
+                    style={{height: '30px'}}
                 />
             }
             <Input
@@ -145,7 +143,7 @@ export const PageHeader = ({ children }: Props) => {
                     message={PASSWORD_ERROR_MESSAGE}
                     type="error"
                     showIcon
-                    style={{height: '85px'}}
+                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
                 />
             }
             <Button type="primary" onClick={signInSubmit}>
@@ -159,7 +157,7 @@ export const PageHeader = ({ children }: Props) => {
 
   const signUpElement = () => {
     return (
-      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
         <Card
           style={{
             backgroundColor: headerColor,
@@ -180,7 +178,7 @@ export const PageHeader = ({ children }: Props) => {
                     message={EMAIL_ERROR_MESSAGE}
                     type="error"
                     showIcon
-                    style={{height: '85px'}}
+                    style={{height: '30px'}}
                 />
             }
             <Input
@@ -194,7 +192,7 @@ export const PageHeader = ({ children }: Props) => {
                     message={PASSWORD_ERROR_MESSAGE}
                     type="error"
                     showIcon
-                    style={{height: '85px'}}
+                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
                 />
             }
             <Button type="primary" onClick={signUpSubmit}>
