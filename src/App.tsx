@@ -13,7 +13,6 @@ const App = () => {
         <Routes>
           <Route path={'/'} element={<Welcome />} />
           <Route path={'/main'} element={<Main />} />
-          <Route path={'/sign'} element={<Sign />} />
         </Routes>
       </PageFooter>
     </div>

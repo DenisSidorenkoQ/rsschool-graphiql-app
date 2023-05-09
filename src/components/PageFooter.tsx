@@ -72,7 +72,7 @@ export const PageFooter = ({ children }: Props) => {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            backgroundColor: token['orange-5'],
+            backgroundColor: token['orange-7'],
             padding: '10px',
           }}
         >
@@ -80,7 +80,6 @@ export const PageFooter = ({ children }: Props) => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: token['orange-5'],
             }}
           >
             <a href="https://rs.school/react/" target="_blank" rel="noreferrer">
