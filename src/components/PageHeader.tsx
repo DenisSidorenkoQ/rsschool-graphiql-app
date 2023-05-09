@@ -220,7 +220,7 @@ export const PageHeader = ({ children }: Props) => {
   window.addEventListener('scroll', changeColor);
 
   return (
-    <Layout className="layout">
+    <Layout className="layout" >
       <Header
         style={{
           position: 'sticky',
@@ -269,7 +269,7 @@ export const PageHeader = ({ children }: Props) => {
         {signInIsOpen ? signInElement() : ''}
         {signUpIsOpen ? signUpElement() : ''}
       </Header>
-      <Content style={{ background: 'white', padding: '0 50px' }}>
+      <Content style={{ background: 'white' }}>
         <div className="site-layout-content" style={{ background: 'white' }}>
           {children}
         </div>
