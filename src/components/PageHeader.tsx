@@ -1,130 +1,243 @@
-import React, {ReactNode, useState} from 'react';
-import {Button, Card, Form, Input, Layout, Space} from "antd";
-import {Content, Header} from "antd/lib/layout/layout";
-import {useNavigate} from "react-router-dom";
+import React, { ReactNode, useEffect, useState } from 'react';
+import { Button, Card, Input, Layout, Space } from 'antd';
+import { Content, Header } from 'antd/lib/layout/layout';
+import { useNavigate } from 'react-router-dom';
+import { InputStatus } from 'antd/es/_util/statusUtils';
 
 interface Props {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export const PageHeader = ({ children }: Props) => {
-    const tokenAuth = localStorage.getItem('token');
-    const navigate = useNavigate();
+  const tokenAuth = localStorage.getItem('token');
+  const navigate = useNavigate();
 
-    const STANDARD_COLOR = 'Indigo';
-    const SCROLL_COLOR = 'Blue';
-    const STANDARD_HEADER_HEIGHT = '70px';
-    const SCROLL_HEADER_HEIGHT = '51px';
-    const [headerColor, setHeaderColor] = useState(STANDARD_COLOR);
-    const [headerHeight, setHeaderHeight] = useState(STANDARD_HEADER_HEIGHT);
-    const [signInIsOpen, setSignInIsOpen] = useState(false);
-    const [signUpIsOpen, setSignUpIsOpen] = useState(false);
+  const STANDARD_COLOR = 'Indigo';
+  const SCROLL_COLOR = 'Blue';
+  const STANDARD_HEADER_HEIGHT = '70px';
+  const SCROLL_HEADER_HEIGHT = '51px';
+  const PASSWORD_REGEXP = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const EMAIL_REGEXP =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
 
-    const [registrationEmail, setRegistrationEmail] = useState('');
-    const [registrationPassword, setRegistrationPassword] = useState('');
+  const [headerColor, setHeaderColor] = useState(STANDARD_COLOR);
+  const [headerHeight, setHeaderHeight] = useState(STANDARD_HEADER_HEIGHT);
+  const [signInIsOpen, setSignInIsOpen] = useState(false);
+  const [signUpIsOpen, setSignUpIsOpen] = useState(false);
 
-    const [authorizationEmail, setAuthorizationEmail] = useState('');
-    const [authorizationPassword, setAuthorizationPassword] = useState('');
+  const [signUpEmailStatus, setSignUpEmailStatus] = useState<InputStatus>('');
+  const [signUpPasswordStatus, setSignUpPasswordStatus] = useState<InputStatus>('');
+  const [signInEmailStatus, setSignInEmailStatus] = useState<InputStatus>('');
+  const [signInPasswordStatus, setSignInPasswordStatus] = useState<InputStatus>('');
 
-    const onChangeRegistrationEmail = (e) => {
-        setRegistrationEmail(e.target.value);
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+
+  useEffect(() => {
+    setSignInPasswordStatus('');
+    setSignInEmailStatus('');
+  }, [signInIsOpen]);
+
+  useEffect(() => {
+    setSignUpPasswordStatus('');
+    setSignUpEmailStatus('');
+  }, [signUpIsOpen]);
+
+  const onChangeSignUpEmail = (e) => {
+    setSignUpEmail(e.target.value);
+  };
+  const onChangeSignUpPassword = (e) => {
+    setSignUpPassword(e.target.value);
+  };
+  const onChangeSignInEmail = (e) => {
+    setSignInEmail(e.target.value);
+  };
+  const onChangeSignInPassword = (e) => {
+    setSignInPassword(e.target.value);
+  };
+
+  const signInSubmit = () => {
+    validationSignIn();
+  };
+
+  const signUpSubmit = () => {
+    validationSignUp();
+  };
+
+  const validationSignIn = () => {
+    let validCount = 0;
+
+    if (PASSWORD_REGEXP.test(signInPassword)) {
+      setSignInPasswordStatus('');
+      validCount++;
+    } else {
+      setSignInPasswordStatus('error');
     }
-    const onChangeRegistrationPassword = (e) => {
-        setRegistrationPassword(e.target.value);
-    }
-    const onChangeAuthorizationEmail = (e) => {
-        setAuthorizationEmail(e.target.value);
-    }
-    const onChangeAuthorizationPassword = (e) => {
-        setAuthorizationPassword(e.target.value);
+    if (EMAIL_REGEXP.test(signInEmail)) {
+      setSignInEmailStatus('');
+      validCount++;
+    } else {
+      setSignInEmailStatus('error');
     }
 
-    const signInElement = () => {
-        return (
-            <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
-                <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
-                    <Space direction="vertical">
-                        <h1>Authorization</h1>
-                        <Input status='' placeholder="Email" onChange={onChangeAuthorizationEmail} />
-                        <Input status='' placeholder="Password" onChange={onChangeAuthorizationPassword} />
-                    </Space>
-                </Card>
-            </div>
+    return validCount === 2;
+  };
 
-        )
+  const validationSignUp = () => {
+    let validCount = 0;
+
+    if (PASSWORD_REGEXP.test(signUpPassword)) {
+      setSignUpPasswordStatus('');
+      validCount++;
+    } else {
+      setSignUpPasswordStatus('error');
+    }
+    if (EMAIL_REGEXP.test(signUpEmail)) {
+      setSignUpEmailStatus('');
+      validCount++;
+    } else {
+      setSignUpEmailStatus('error');
     }
 
-    const signUpElement = () => {
-        return (
-            <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
-                <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
-                    <Space direction="vertical">
-                        <h1>Registration</h1>
-                        <Input status='' placeholder="Email" onChange={onChangeRegistrationEmail} />
-                        <Input status='' placeholder="Password" onChange={onChangeRegistrationPassword} />
-                    </Space>
-                </Card>
-            </div>
-        )
-    }
+    return validCount === 2;
+  };
 
-    const changeColor = () => {
-        if (window.scrollY >= 60) {
-            setHeaderColor(SCROLL_COLOR);
-            setHeaderHeight(SCROLL_HEADER_HEIGHT);
-        }
-        if (window.scrollY < 40) {
-            setHeaderColor(STANDARD_COLOR);
-            setHeaderHeight(STANDARD_HEADER_HEIGHT);
-        }
-    }
-
-    window.addEventListener('scroll', changeColor)
-
+  const signInElement = () => {
     return (
-        <Layout className="layout">
-            <Header style={{ position: 'sticky', display: 'flex', justifyContent: 'end', top: 0, zIndex: 1, width: '100%', height: headerHeight, backgroundColor: headerColor}}>
-                {tokenAuth ? (
-                    <Button
-                        ghost
-                        onClick={() => {
-                            navigate('/main');
-                        }}
-                    >
-                        Go to Main Page
-                    </Button>
-                ) : (
-                    <Space>
-                        <Button
-                            ghost
-                            onClick={() => {
-                                if (signUpIsOpen) setSignUpIsOpen(false)
-                                if (signInIsOpen) setSignInIsOpen(false);
-                                if (!signInIsOpen) setSignInIsOpen(true);
-                            }}
-                        >
-                            Sign In
-                        </Button>
-                        <Button
-                            ghost
-                            onClick={() => {
-                                if (signInIsOpen) setSignInIsOpen(false)
-                                if (signUpIsOpen) setSignUpIsOpen(false);
-                                if (!signUpIsOpen) setSignUpIsOpen(true);
-                            }}
-                        >
-                            Sign Up
-                        </Button>
-                    </Space>
-                )}
-                {signInIsOpen ? signInElement() : ''}
-                {signUpIsOpen ? signUpElement() : ''}
-            </Header>
-            <Content style={{ background: 'white', padding: '0 50px' }}>
-                <div className="site-layout-content" style={{ background: "white" }}>
-                    {children}
-                </div>
-            </Content>
-        </Layout>
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+        <Card
+          style={{
+            backgroundColor: headerColor,
+            borderColor: headerColor,
+            borderRadius: '0% 0% 0% 10%',
+          }}
+        >
+          <Space direction="vertical">
+            <h1>Sign In</h1>
+            <Input
+              status={signInEmailStatus}
+              placeholder="Email"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignInEmail}
+            />
+            <Input
+              status={signInPasswordStatus}
+              placeholder="Password"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignInPassword}
+            />
+            <Button type="primary" onClick={signInSubmit}>
+              Submit
+            </Button>
+          </Space>
+        </Card>
+      </div>
     );
-}
+  };
+
+  const signUpElement = () => {
+    return (
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+        <Card
+          style={{
+            backgroundColor: headerColor,
+            borderColor: headerColor,
+            borderRadius: '0% 0% 0% 10%',
+          }}
+        >
+          <Space direction="vertical">
+            <h1>Sign Up</h1>
+            <Input
+              status={signUpEmailStatus}
+              placeholder="Email"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignUpEmail}
+            />
+            <Input
+              status={signUpPasswordStatus}
+              placeholder="Password"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignUpPassword}
+            />
+            <Button type="primary" onClick={signUpSubmit}>
+              Submit
+            </Button>
+          </Space>
+        </Card>
+      </div>
+    );
+  };
+
+  const changeColor = () => {
+    if (window.scrollY >= 60) {
+      setHeaderColor(SCROLL_COLOR);
+      setHeaderHeight(SCROLL_HEADER_HEIGHT);
+    }
+    if (window.scrollY < 40) {
+      setHeaderColor(STANDARD_COLOR);
+      setHeaderHeight(STANDARD_HEADER_HEIGHT);
+    }
+  };
+
+  window.addEventListener('scroll', changeColor);
+
+  return (
+    <Layout className="layout">
+      <Header
+        style={{
+          position: 'sticky',
+          display: 'flex',
+          justifyContent: 'end',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          height: headerHeight,
+          backgroundColor: headerColor,
+        }}
+      >
+        {tokenAuth ? (
+          <Button
+            ghost
+            onClick={() => {
+              navigate('/main');
+            }}
+          >
+            Go to Main Page
+          </Button>
+        ) : (
+          <Space>
+            <Button
+              ghost
+              onClick={() => {
+                if (signUpIsOpen) setSignUpIsOpen(false);
+                if (signInIsOpen) setSignInIsOpen(false);
+                if (!signInIsOpen) setSignInIsOpen(true);
+              }}
+            >
+              Sign In
+            </Button>
+            <Button
+              ghost
+              onClick={() => {
+                if (signInIsOpen) setSignInIsOpen(false);
+                if (signUpIsOpen) setSignUpIsOpen(false);
+                if (!signUpIsOpen) setSignUpIsOpen(true);
+              }}
+            >
+              Sign Up
+            </Button>
+          </Space>
+        )}
+        {signInIsOpen ? signInElement() : ''}
+        {signUpIsOpen ? signUpElement() : ''}
+      </Header>
+      <Content style={{ background: 'white', padding: '0 50px' }}>
+        <div className="site-layout-content" style={{ background: 'white' }}>
+          {children}
+        </div>
+      </Content>
+    </Layout>
+  );
+};

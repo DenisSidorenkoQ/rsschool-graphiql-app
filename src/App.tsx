@@ -1,10 +1,9 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Main } from './pages/Main';
 import { Welcome } from './pages/Welcome/Welcome';
-import { Sign } from './pages/Sign';
 import './App.css';
-import {PageHeader} from "./components/PageHeader";
+import { PageHeader } from './components/PageHeader';
+import { Main } from './pages/Main';
 
 const App = () => {
   return (
@@ -12,7 +11,7 @@ const App = () => {
       <PageHeader>
         <Routes>
           <Route path={'/'} element={<Welcome />} />
-          <Route path={'/sign'} element={<Sign />} />
+          <Route path={'/main'} element={<Main />} />
         </Routes>
       </PageHeader>
     </div>
