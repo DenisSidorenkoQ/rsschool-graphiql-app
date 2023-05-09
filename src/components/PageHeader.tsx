@@ -22,9 +22,9 @@ export const PageHeader = ({ children }: Props) => {
 
     const signInElement = () => {
         return (
-            <div style={{ position: 'fixed', zIndex: 2, bottom: '73%', left: '85%' }}>
-                <Card style={{ width: '300px', height: '200px', display: 'flex', justifyContent: 'center', zIndex: 1, backgroundColor: headerColor, borderColor: headerColor}}>
-                    <Space direction="vertical" style={{ width: '100%' }}>
+            <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+                <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
+                    <Space direction="vertical">
                         <h1>Authorization</h1>
                         <Input status='' placeholder="Email" />
                         <Input status='' placeholder="Password" />
@@ -37,9 +37,9 @@ export const PageHeader = ({ children }: Props) => {
 
     const signUpElement = () => {
         return (
-            <div style={{ position: 'fixed', zIndex: 2, bottom: '73%', left: '85%' }}>
-                <Card style={{ width: '300px', height: '200px', display: 'flex', justifyContent: 'center', zIndex: 1, backgroundColor: headerColor, borderColor: headerColor}}>
-                    <Space direction="vertical" style={{ width: '100%' }}>
+            <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
+                <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
+                    <Space direction="vertical">
                         <h1>Registration</h1>
                         <Input status='' placeholder="Email" />
                         <Input status='' placeholder="Password" />
@@ -98,12 +98,12 @@ export const PageHeader = ({ children }: Props) => {
                         </Button>
                     </Space>
                 )}
+                {signInIsOpen ? signInElement() : ''}
+                {signUpIsOpen ? signUpElement() : ''}
             </Header>
             <Content style={{ background: 'white', padding: '0 50px' }}>
                 <div className="site-layout-content" style={{ background: "white" }}>
                     {children}
-                    {signInIsOpen ? signInElement() : ''}
-                    {signUpIsOpen ? signUpElement() : ''}
                 </div>
             </Content>
         </Layout>
