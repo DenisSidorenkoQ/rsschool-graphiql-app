@@ -20,14 +20,33 @@ export const PageHeader = ({ children }: Props) => {
     const [signInIsOpen, setSignInIsOpen] = useState(false);
     const [signUpIsOpen, setSignUpIsOpen] = useState(false);
 
+    const [registrationEmail, setRegistrationEmail] = useState('');
+    const [registrationPassword, setRegistrationPassword] = useState('');
+
+    const [authorizationEmail, setAuthorizationEmail] = useState('');
+    const [authorizationPassword, setAuthorizationPassword] = useState('');
+
+    const onChangeRegistrationEmail = (e) => {
+        setRegistrationEmail(e.target.value);
+    }
+    const onChangeRegistrationPassword = (e) => {
+        setRegistrationPassword(e.target.value);
+    }
+    const onChangeAuthorizationEmail = (e) => {
+        setAuthorizationEmail(e.target.value);
+    }
+    const onChangeAuthorizationPassword = (e) => {
+        setAuthorizationPassword(e.target.value);
+    }
+
     const signInElement = () => {
         return (
             <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
                 <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
                     <Space direction="vertical">
                         <h1>Authorization</h1>
-                        <Input status='' placeholder="Email" />
-                        <Input status='' placeholder="Password" />
+                        <Input status='' placeholder="Email" onChange={onChangeAuthorizationEmail} />
+                        <Input status='' placeholder="Password" onChange={onChangeAuthorizationPassword} />
                     </Space>
                 </Card>
             </div>
@@ -41,8 +60,8 @@ export const PageHeader = ({ children }: Props) => {
                 <Card style={{ backgroundColor: headerColor, borderColor: headerColor, borderRadius: '0% 0% 0% 10%'}}>
                     <Space direction="vertical">
                         <h1>Registration</h1>
-                        <Input status='' placeholder="Email" />
-                        <Input status='' placeholder="Password" />
+                        <Input status='' placeholder="Email" onChange={onChangeRegistrationEmail} />
+                        <Input status='' placeholder="Password" onChange={onChangeRegistrationPassword} />
                     </Space>
                 </Card>
             </div>
