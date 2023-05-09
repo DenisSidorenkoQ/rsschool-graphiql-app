@@ -72,10 +72,11 @@ export const Footer = () => {
             backgroundColor: token['orange-5'],
           }}
         >
-          <Image width={60} src={rs} />
-
+          <a href="https://rs.school/react/" target="_blank" rel="noreferrer">
+            <Image width={60} src={rs} preview={false} />
+          </a>
           <Space style={{ marginTop: '5px' }}>
-            <Image width={14} src={copy} />
+            <Image width={14} src={copy} preview={false} />
             <Typography.Text>2023</Typography.Text>
           </Space>
         </Col>
@@ -83,23 +84,3 @@ export const Footer = () => {
     </>
   );
 };
-
-// <Space
-//   direction="vertical"
-//   align="center"
-//   style={{
-//     display: 'flex',
-//     justifyContent: 'center',
-//     backgroundColor: token['orange-6'],
-//     padding: '20px',
-//   }}
-// >
-//   {/* <Space
-//     size={50}
-//     style={{
-//       display: 'flex',
-//       justifyContent: 'center',
-//       backgroundColor: token['orange-7'],
-//       padding: '10px',
-//     }}
-//   > */}
