@@ -1,0 +1,277 @@
+import React, { ReactNode, useEffect, useState } from 'react';
+import {Alert, Button, Card, Input, Layout, Space} from 'antd';
+import { Content, Header } from 'antd/lib/layout/layout';
+import { useNavigate } from 'react-router-dom';
+import { InputStatus } from 'antd/es/_util/statusUtils';
+
+interface Props {
+  children: ReactNode;
+}
+
+export const PageHeader = ({ children }: Props) => {
+  const tokenAuth = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  const STANDARD_COLOR = 'Indigo';
+  const SCROLL_COLOR = 'Blue';
+  const STANDARD_HEADER_HEIGHT = '70px';
+  const SCROLL_HEADER_HEIGHT = '51px';
+  const PASSWORD_ERROR_MESSAGE = 'Minimum 8 symbols \nAt least one letter, one digit, one special character';
+  const EMAIL_ERROR_MESSAGE = 'Incorrect email address';
+  const PASSWORD_REGEXP = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const EMAIL_REGEXP =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+
+  const [headerColor, setHeaderColor] = useState(STANDARD_COLOR);
+  const [headerHeight, setHeaderHeight] = useState(STANDARD_HEADER_HEIGHT);
+  const [signInIsOpen, setSignInIsOpen] = useState(false);
+  const [signUpIsOpen, setSignUpIsOpen] = useState(false);
+
+  const [signUpEmailStatus, setSignUpEmailStatus] = useState<InputStatus>('');
+  const [signUpPasswordStatus, setSignUpPasswordStatus] = useState<InputStatus>('');
+  const [signInEmailStatus, setSignInEmailStatus] = useState<InputStatus>('');
+  const [signInPasswordStatus, setSignInPasswordStatus] = useState<InputStatus>('');
+
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+
+  useEffect(() => {
+    setSignInPasswordStatus('');
+    setSignInEmailStatus('');
+  }, [signInIsOpen]);
+
+  useEffect(() => {
+    setSignUpPasswordStatus('');
+    setSignUpEmailStatus('');
+  }, [signUpIsOpen]);
+
+  const onChangeSignUpEmail = (e) => {
+    setSignUpEmail(e.target.value);
+  };
+  const onChangeSignUpPassword = (e) => {
+    setSignUpPassword(e.target.value);
+  };
+  const onChangeSignInEmail = (e) => {
+    setSignInEmail(e.target.value);
+  };
+  const onChangeSignInPassword = (e) => {
+    setSignInPassword(e.target.value);
+  };
+
+  const signInSubmit = () => {
+    validationSignIn();
+  };
+
+  const signUpSubmit = () => {
+    validationSignUp();
+  };
+
+  const validationSignIn = () => {
+    let validCount = 0;
+
+    if (PASSWORD_REGEXP.test(signInPassword)) {
+      setSignInPasswordStatus('');
+      validCount++;
+    } else {
+      setSignInPasswordStatus('error');
+    }
+    if (EMAIL_REGEXP.test(signInEmail)) {
+      setSignInEmailStatus('');
+      validCount++;
+    } else {
+      setSignInEmailStatus('error');
+    }
+
+    return validCount === 2;
+  };
+
+  const validationSignUp = () => {
+    let validCount = 0;
+
+    if (PASSWORD_REGEXP.test(signUpPassword)) {
+      setSignUpPasswordStatus('');
+      validCount++;
+    } else {
+      setSignUpPasswordStatus('error');
+    }
+    if (EMAIL_REGEXP.test(signUpEmail)) {
+      setSignUpEmailStatus('');
+      validCount++;
+    } else {
+      setSignUpEmailStatus('error');
+    }
+
+    return validCount === 2;
+  };
+
+  const signInElement = () => {
+    return (
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
+        <Card
+          style={{
+            backgroundColor: headerColor,
+            borderColor: headerColor,
+            borderRadius: '0% 0% 0% 10%',
+          }}
+        >
+          <Space direction="vertical">
+            <h1>Sign In</h1>
+            <Input
+              status={signInEmailStatus}
+              placeholder="Email"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignInEmail}
+            />
+            {signInEmailStatus !== '' &&
+                <Alert
+                    message={EMAIL_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '30px'}}
+                />
+            }
+            <Input
+              status={signInPasswordStatus}
+              placeholder="Password"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignInPassword}
+            />
+            {signInPasswordStatus !== '' &&
+                <Alert
+                    message={PASSWORD_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
+                />
+            }
+            <Button type="primary" onClick={signInSubmit}>
+              Submit
+            </Button>
+          </Space>
+        </Card>
+      </div>
+    );
+  };
+
+  const signUpElement = () => {
+    return (
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
+        <Card
+          style={{
+            backgroundColor: headerColor,
+            borderColor: headerColor,
+            borderRadius: '0% 0% 0% 10%',
+          }}
+        >
+          <Space direction="vertical">
+            <h1>Sign Up</h1>
+            <Input
+              status={signUpEmailStatus}
+              placeholder="Email"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignUpEmail}
+            />
+            {signUpEmailStatus !== '' &&
+                <Alert
+                    message={EMAIL_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '30px'}}
+                />
+            }
+            <Input
+              status={signUpPasswordStatus}
+              placeholder="Password"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignUpPassword}
+            />
+            {signUpPasswordStatus !== '' &&
+                <Alert
+                    message={PASSWORD_ERROR_MESSAGE}
+                    type="error"
+                    showIcon
+                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
+                />
+            }
+            <Button type="primary" onClick={signUpSubmit}>
+              Submit
+            </Button>
+          </Space>
+        </Card>
+      </div>
+    );
+  };
+
+  const changeColor = () => {
+    if (window.scrollY >= 60) {
+      setHeaderColor(SCROLL_COLOR);
+      setHeaderHeight(SCROLL_HEADER_HEIGHT);
+    }
+    if (window.scrollY < 40) {
+      setHeaderColor(STANDARD_COLOR);
+      setHeaderHeight(STANDARD_HEADER_HEIGHT);
+    }
+  };
+
+  window.addEventListener('scroll', changeColor);
+
+  return (
+    <Layout className="layout" >
+      <Header
+        style={{
+          position: 'sticky',
+          display: 'flex',
+          justifyContent: 'end',
+          top: 0,
+          zIndex: 1,
+          width: '100%',
+          height: headerHeight,
+          backgroundColor: headerColor,
+        }}
+      >
+        {tokenAuth ? (
+          <Button
+            ghost
+            onClick={() => {
+              navigate('/main');
+            }}
+          >
+            Go to Main Page
+          </Button>
+        ) : (
+          <Space>
+            <Button
+              ghost
+              onClick={() => {
+                if (signUpIsOpen) setSignUpIsOpen(false);
+                if (signInIsOpen) setSignInIsOpen(false);
+                if (!signInIsOpen) setSignInIsOpen(true);
+              }}
+            >
+              Sign In
+            </Button>
+            <Button
+              ghost
+              onClick={() => {
+                if (signInIsOpen) setSignInIsOpen(false);
+                if (signUpIsOpen) setSignUpIsOpen(false);
+                if (!signUpIsOpen) setSignUpIsOpen(true);
+              }}
+            >
+              Sign Up
+            </Button>
+          </Space>
+        )}
+        {signInIsOpen ? signInElement() : ''}
+        {signUpIsOpen ? signUpElement() : ''}
+      </Header>
+      <Content style={{ background: 'white' }}>
+        <div className="site-layout-content" style={{ background: 'white' }}>
+          {children}
+        </div>
+      </Content>
+    </Layout>
+  );
+};
