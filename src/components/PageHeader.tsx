@@ -76,6 +76,7 @@ export const PageHeader = ({ children }: Props) => {
     if (validationSignIn()) {
       setSignInResult(await logInWithEmailAndPassword(signInEmail, signInPassword));
       setSignInIsOpen(false);
+      navigate('/main');
     }
   };
 
@@ -306,6 +307,7 @@ export const PageHeader = ({ children }: Props) => {
                   ghost
                   onClick={() => {
                     localStorage.removeItem('token');
+                    navigate('/');
                   }}
               >
                 Logout

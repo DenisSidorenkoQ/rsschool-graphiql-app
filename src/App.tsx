@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Route, Routes} from 'react-router-dom';
 import { Welcome } from './pages/Welcome/Welcome';
 import './App.css';
 import { PageHeader } from './components/PageHeader';
@@ -8,32 +8,30 @@ import { PageFooter } from './components/PageFooter';
 import {Error} from "./pages/Error/Error";
 
 const App = () => {
-  if(localStorage.getItem('token')) {
+  const [authToken, setAuthToken] = useState('');
+
+  useEffect(() => {
+      setAuthToken(localStorage.getItem('token'));
+  }, []);
+
+  if(authToken !== '') {
     return (
         <div className="App">
-          <PageHeader>
-            <PageFooter>
-              <Routes>
-                <Route path={'/'} element={<Welcome />} />
-                <Route path={'/main'} element={<Main />} />
-                <Route path="*" element={<Error />} />
-              </Routes>
-            </PageFooter>
-          </PageHeader>
+          <Routes>
+            <Route path={'/'} element={<PageHeader><PageFooter><Welcome /></PageFooter></PageHeader>} />
+            <Route path={'/main'} element={<PageHeader><PageFooter><Main /></PageFooter></PageHeader>} />
+            <Route path="*" element={<Error />} />
+          </Routes>
         </div>
     );
   } else {
     return (
-        <div className="App">
-            <PageHeader>
-                <PageFooter>
-                    <Routes>
-                        <Route path={'/'} element={<Welcome />} />
-                        <Route path="*" element={<Error />} />
-                    </Routes>
-                </PageFooter>
-            </PageHeader>
-        </div>
+      <div className="App">
+        <Routes>
+            <Route path="*" element={<PageFooter><Error /></PageFooter>} />
+            <Route path={'/'} element={<PageHeader><PageFooter><Welcome /></PageFooter></PageHeader>} />
+        </Routes>
+      </div>
     );
   }
 
