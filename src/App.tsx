@@ -6,15 +6,17 @@ import { PageHeader } from './components/PageHeader';
 import { Main } from './pages/Main';
 import { PageFooter } from './components/PageFooter';
 import {Error} from "./pages/Error/Error";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {auth} from "./firebase";
 
 const App = () => {
-  const [authToken, setAuthToken] = useState('');
+  const [user, loading, error] = useAuthState(auth);
 
-  useEffect(() => {
-      setAuthToken(localStorage.getItem('token'));
-  }, []);
+  if(loading) {
+      return <h1>Loading</h1>
+  }
 
-  if(authToken !== '') {
+  if(user?.uid) {
     return (
         <div className="App">
           <Routes>
@@ -24,16 +26,16 @@ const App = () => {
           </Routes>
         </div>
     );
-  } else {
-    return (
-      <div className="App">
-        <Routes>
-            <Route path="*" element={<PageFooter><Error /></PageFooter>} />
-            <Route path={'/'} element={<PageHeader><PageFooter><Welcome /></PageFooter></PageHeader>} />
-        </Routes>
-      </div>
-    );
   }
+
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="*" element={<Error />} />
+        <Route path={'/'} element={<PageHeader><PageFooter><Welcome /></PageFooter></PageHeader>} />
+      </Routes>
+    </div>
+  );
 
 };
 

@@ -1,10 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import {Alert, Button, Card, Input, Layout, Space} from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
-import { useNavigate } from 'react-router-dom';
+import {redirect, useNavigate} from 'react-router-dom';
 import { InputStatus } from 'antd/es/_util/statusUtils';
 import {signInWithEmailAndPassword} from "firebase/auth";
-import {logInWithEmailAndPassword, registerWithEmailAndPassword} from "../firebase";
+import {logInWithEmailAndPassword, logout, registerWithEmailAndPassword} from "../firebase";
 
 interface Props {
   children: ReactNode;
@@ -307,6 +307,7 @@ export const PageHeader = ({ children }: Props) => {
                   ghost
                   onClick={() => {
                     localStorage.removeItem('token');
+                    logout();
                     navigate('/');
                   }}
               >
