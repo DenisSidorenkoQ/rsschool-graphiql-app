@@ -1,10 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import {Alert, Button, Card, Input, Layout, Space} from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
-import {redirect, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import { InputStatus } from 'antd/es/_util/statusUtils';
-import {signInWithEmailAndPassword} from "firebase/auth";
-import {logInWithEmailAndPassword, logout, registerWithEmailAndPassword} from "../firebase";
+import {auth, logInWithEmailAndPassword, logout, registerWithEmailAndPassword} from "../firebase";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 interface Props {
   children: ReactNode;
@@ -49,11 +49,13 @@ export const PageHeader = ({ children }: Props) => {
   useEffect(() => {
     setSignInPasswordStatus('');
     setSignInEmailStatus('');
+    setSignInResult(0);
   }, [signInIsOpen]);
 
   useEffect(() => {
     setSignUpPasswordStatus('');
     setSignUpEmailStatus('');
+    setSignUpResult(0);
   }, [signUpIsOpen]);
 
   const onChangeSignUpEmail = (e) => {
@@ -293,7 +295,7 @@ export const PageHeader = ({ children }: Props) => {
           backgroundColor: headerColor,
         }}
       >
-        {localStorage.getItem('token') ? (
+        {useAuthState(auth)[0]?.uid ? (
             <div>
               <Button
                   ghost
@@ -306,7 +308,6 @@ export const PageHeader = ({ children }: Props) => {
               <Button
                   ghost
                   onClick={() => {
-                    localStorage.removeItem('token');
                     logout();
                     navigate('/');
                   }}
