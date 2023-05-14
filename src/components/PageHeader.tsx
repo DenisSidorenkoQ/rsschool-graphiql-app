@@ -1,23 +1,29 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import {Alert, Button, Card, Input, Layout, Space} from 'antd';
+import { Alert, Button, Card, Input, Layout, Space } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import { useNavigate } from 'react-router-dom';
 import { InputStatus } from 'antd/es/_util/statusUtils';
+import { auth, logInWithEmailAndPassword, logout, registerWithEmailAndPassword } from '../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface Props {
   children: ReactNode;
 }
 
 export const PageHeader = ({ children }: Props) => {
-  const tokenAuth = localStorage.getItem('token');
   const navigate = useNavigate();
 
   const STANDARD_COLOR = 'Indigo';
   const SCROLL_COLOR = 'Blue';
   const STANDARD_HEADER_HEIGHT = '70px';
   const SCROLL_HEADER_HEIGHT = '51px';
-  const PASSWORD_ERROR_MESSAGE = 'Minimum 8 symbols \nAt least one letter, one digit, one special character';
+  const PASSWORD_ERROR_MESSAGE =
+    'Minimum 8 symbols \nAt least one letter, one digit, one special character';
   const EMAIL_ERROR_MESSAGE = 'Incorrect email address';
+  const SIGN_IN_ERROR_STATUS = 'User not exist';
+  const SIGN_IN_OK_STATUS = 'Ok';
+  const SIGN_UP_ERROR_STATUS = 'User already exists';
+  const SIGN_UP_OK_STATUS = 'User created';
   const PASSWORD_REGEXP = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const EMAIL_REGEXP =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
@@ -29,22 +35,28 @@ export const PageHeader = ({ children }: Props) => {
 
   const [signUpEmailStatus, setSignUpEmailStatus] = useState<InputStatus>('');
   const [signUpPasswordStatus, setSignUpPasswordStatus] = useState<InputStatus>('');
+  const [signUpNameStatus, setSignUpNameStatus] = useState<InputStatus>('');
   const [signInEmailStatus, setSignInEmailStatus] = useState<InputStatus>('');
   const [signInPasswordStatus, setSignInPasswordStatus] = useState<InputStatus>('');
 
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
+  const [signUpName, setSignUpName] = useState('');
+  const [signUpResult, setSignUpResult] = useState(0);
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [signInResult, setSignInResult] = useState(0);
 
   useEffect(() => {
     setSignInPasswordStatus('');
     setSignInEmailStatus('');
+    setSignInResult(0);
   }, [signInIsOpen]);
 
   useEffect(() => {
     setSignUpPasswordStatus('');
     setSignUpEmailStatus('');
+    setSignUpResult(0);
   }, [signUpIsOpen]);
 
   const onChangeSignUpEmail = (e) => {
@@ -53,6 +65,9 @@ export const PageHeader = ({ children }: Props) => {
   const onChangeSignUpPassword = (e) => {
     setSignUpPassword(e.target.value);
   };
+  const onChangeSignUpName = (e) => {
+    setSignUpName(e.target.value);
+  };
   const onChangeSignInEmail = (e) => {
     setSignInEmail(e.target.value);
   };
@@ -60,12 +75,18 @@ export const PageHeader = ({ children }: Props) => {
     setSignInPassword(e.target.value);
   };
 
-  const signInSubmit = () => {
-    validationSignIn();
+  const signInSubmit = async () => {
+    if (validationSignIn()) {
+      setSignInResult(await logInWithEmailAndPassword(signInEmail, signInPassword));
+      setSignInIsOpen(false);
+      navigate('/main');
+    }
   };
 
-  const signUpSubmit = () => {
-    validationSignUp();
+  const signUpSubmit = async () => {
+    if (validationSignUp()) {
+      setSignUpResult(await registerWithEmailAndPassword(signUpName, signUpEmail, signUpPassword));
+    }
   };
 
   const validationSignIn = () => {
@@ -102,13 +123,19 @@ export const PageHeader = ({ children }: Props) => {
     } else {
       setSignUpEmailStatus('error');
     }
+    if (signUpName !== '') {
+      setSignUpNameStatus('');
+      validCount++;
+    } else {
+      setSignUpNameStatus('error');
+    }
 
-    return validCount === 2;
+    return validCount === 3;
   };
 
   const signInElement = () => {
     return (
-      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
         <Card
           style={{
             backgroundColor: headerColor,
@@ -124,28 +151,44 @@ export const PageHeader = ({ children }: Props) => {
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignInEmail}
             />
-            {signInEmailStatus !== '' &&
-                <Alert
-                    message={EMAIL_ERROR_MESSAGE}
-                    type="error"
-                    showIcon
-                    style={{height: '30px'}}
-                />
-            }
+            {signInEmailStatus !== '' && (
+              <Alert
+                message={EMAIL_ERROR_MESSAGE}
+                type="error"
+                showIcon
+                style={{ height: '30px' }}
+              />
+            )}
             <Input
               status={signInPasswordStatus}
               placeholder="Password"
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignInPassword}
             />
-            {signInPasswordStatus !== '' &&
-                <Alert
-                    message={PASSWORD_ERROR_MESSAGE}
-                    type="error"
-                    showIcon
-                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
-                />
-            }
+            {signInPasswordStatus !== '' && (
+              <Alert
+                message={PASSWORD_ERROR_MESSAGE}
+                type="error"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
+            {signInResult === -1 && (
+              <Alert
+                message={SIGN_IN_ERROR_STATUS}
+                type="error"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
+            {signInResult === 1 && (
+              <Alert
+                message={SIGN_IN_OK_STATUS}
+                type="success"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
             <Button type="primary" onClick={signInSubmit}>
               Submit
             </Button>
@@ -157,7 +200,7 @@ export const PageHeader = ({ children }: Props) => {
 
   const signUpElement = () => {
     return (
-      <div style={{ position: 'fixed', top: '5.5%', right: '0%'}}>
+      <div style={{ position: 'fixed', top: '5.5%', right: '0%' }}>
         <Card
           style={{
             backgroundColor: headerColor,
@@ -168,33 +211,55 @@ export const PageHeader = ({ children }: Props) => {
           <Space direction="vertical">
             <h1>Sign Up</h1>
             <Input
+              status={signUpNameStatus}
+              placeholder="Name"
+              style={{ borderWidth: '2px' }}
+              onChange={onChangeSignUpName}
+            />
+            <Input
               status={signUpEmailStatus}
               placeholder="Email"
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpEmail}
             />
-            {signUpEmailStatus !== '' &&
-                <Alert
-                    message={EMAIL_ERROR_MESSAGE}
-                    type="error"
-                    showIcon
-                    style={{height: '30px'}}
-                />
-            }
+            {signUpEmailStatus !== '' && (
+              <Alert
+                message={EMAIL_ERROR_MESSAGE}
+                type="error"
+                showIcon
+                style={{ height: '30px' }}
+              />
+            )}
             <Input
               status={signUpPasswordStatus}
               placeholder="Password"
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpPassword}
             />
-            {signUpPasswordStatus !== '' &&
-                <Alert
-                    message={PASSWORD_ERROR_MESSAGE}
-                    type="error"
-                    showIcon
-                    style={{height: '50px', whiteSpace: 'pre-wrap'}}
-                />
-            }
+            {signUpPasswordStatus !== '' && (
+              <Alert
+                message={PASSWORD_ERROR_MESSAGE}
+                type="error"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
+            {signUpResult === -1 && (
+              <Alert
+                message={SIGN_UP_ERROR_STATUS}
+                type="error"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
+            {signUpResult === 1 && (
+              <Alert
+                message={SIGN_UP_OK_STATUS}
+                type="success"
+                showIcon
+                style={{ height: '50px', whiteSpace: 'pre-wrap' }}
+              />
+            )}
             <Button type="primary" onClick={signUpSubmit}>
               Submit
             </Button>
@@ -218,7 +283,7 @@ export const PageHeader = ({ children }: Props) => {
   window.addEventListener('scroll', changeColor);
 
   return (
-    <Layout className="layout" >
+    <Layout className="layout">
       <Header
         style={{
           position: 'sticky',
@@ -231,15 +296,26 @@ export const PageHeader = ({ children }: Props) => {
           backgroundColor: headerColor,
         }}
       >
-        {tokenAuth ? (
-          <Button
-            ghost
-            onClick={() => {
-              navigate('/main');
-            }}
-          >
-            Go to Main Page
-          </Button>
+        {useAuthState(auth)[0]?.uid ? (
+          <div>
+            <Button
+              ghost
+              onClick={() => {
+                navigate('/main');
+              }}
+            >
+              Go to Main Page
+            </Button>
+            <Button
+              ghost
+              onClick={() => {
+                logout();
+                navigate('/');
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         ) : (
           <Space>
             <Button
