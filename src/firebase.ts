@@ -1,5 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -17,22 +22,24 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const logInWithEmailAndPassword = async (email, password): Promise<number> => {
-  return await signInWithEmailAndPassword(auth, email, password).then(userCredential => {
-    localStorage.setItem("token", userCredential.user.uid);
-    return 1;
-  }).catch(err => {
-    return -1;
-  });
+  return await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      localStorage.setItem('token', userCredential.user.uid);
+      return 1;
+    })
+    .catch(() => {
+      return -1;
+    });
 };
 
-const registerWithEmailAndPassword = async (name, email, password) : Promise<number> => {
+const registerWithEmailAndPassword = async (name, email, password): Promise<number> => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "users"), {
+    await addDoc(collection(db, 'users'), {
       uid: user.uid,
       name,
-      authProvider: "local",
+      authProvider: 'local',
       email,
     });
     return 1;
@@ -44,10 +51,4 @@ const logout = () => {
   signOut(auth);
 };
 
-export {
-  auth,
-  db,
-  logInWithEmailAndPassword,
-  registerWithEmailAndPassword,
-  logout,
-};
+export { auth, db, logInWithEmailAndPassword, registerWithEmailAndPassword, logout };
