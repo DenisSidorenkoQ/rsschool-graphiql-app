@@ -86,6 +86,8 @@ export const PageHeader = ({ children }: Props) => {
   const signUpSubmit = async () => {
     if (validationSignUp()) {
       setSignUpResult(await registerWithEmailAndPassword(signUpName, signUpEmail, signUpPassword));
+      setSignUpIsOpen(false);
+      navigate('/main');
     }
   };
 
