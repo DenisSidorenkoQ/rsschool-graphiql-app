@@ -5,6 +5,7 @@ import { InputStatus } from 'antd/es/_util/statusUtils';
 import githubService from '../../service/GithubService';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import {ResponseView} from "../../components/ResponseView";
 
 export const Main = () => {
   const REQUEST_ERROR_MESSAGE = 'Something wrong';
@@ -108,7 +109,9 @@ export const Main = () => {
                 }}
               />
             </div>
-            <div id="response"></div>
+            <div id="response">
+              <ResponseView res={response}/>
+            </div>
           </div>
           <div style={{ textAlign: 'center', padding: '20px' }}>
             <Button type="primary" onClick={requestSubmit}>
