@@ -1,4 +1,5 @@
 {
   "main_page": "Go to Main Page",
-  "logout": "Logout"
+  "logout": "Logout",
+  "not_found": "404 Page not found"
 }

@@ -1,0 +1,12 @@
+{
+  "request": "Request",
+  "response": "Response",
+  "request_error_message": "Something wrong",
+  "request_ok_message": "Request received",
+  "validate": "Before proceeding further please validate your token. To generate token refer",
+  "this": "this",
+  "token": "Token",
+  "submit": "Submit",
+  "enter_graphql": "Please enter GraphQL",
+  "send": "Send"
+}
