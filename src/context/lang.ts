@@ -1,6 +1,6 @@
-import React from 'react';
+import { createContext } from 'react';
 
-export const LangContext = React.createContext({
+export const LangContext = createContext({
   language: '',
   toggleLanguage: () => {},
 });

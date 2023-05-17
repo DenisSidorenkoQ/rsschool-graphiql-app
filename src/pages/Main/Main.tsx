@@ -74,7 +74,7 @@ export const Main = () => {
       {!validateGithubToken && (
         <div style={{ textAlign: 'center', alignItems: 'center' }}>
           <span>
-            {editor?.validate} <a href="https://github.com/settings/tokens"> {editor?.this}???</a>.
+            {editor?.validate} <a href="https://github.com/settings/tokens"> {editor?.link}</a>.
           </span>
           <Input
             status={githubToken}
