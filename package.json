@@ -12,6 +12,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.14",
     "@uiw/react-textarea-code-editor": "^1.6.0",
     "antd": "^5.4.7",
     "firebase": "^9.21.0",
