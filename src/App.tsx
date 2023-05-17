@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 import './App.css';
 import { Welcome } from './pages/Welcome/Welcome';
-import { Main } from './pages/Main';
+import { Main } from './pages/Main/Main';
 import { Error } from './pages/Error/Error';
 
 import { PageHeader } from './components/PageHeader';

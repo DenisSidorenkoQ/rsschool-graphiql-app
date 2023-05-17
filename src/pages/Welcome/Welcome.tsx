@@ -1,7 +1,8 @@
+import React from 'react';
 import { Col, Image, Row, Space } from 'antd';
 import Paragraph from 'antd/es/typography/Paragraph';
 import Title from 'antd/es/typography/Title';
-import React from 'react';
+
 import seminar from '../../assets/Seminar-rafiki.png';
 import landing from '../../assets/landing.png';
 import optimization from '../../assets/optimization.png';

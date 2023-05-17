@@ -62,19 +62,19 @@ export const PageHeader = ({ children }: Props) => {
     setSignUpResult(0);
   }, [signUpIsOpen]);
 
-  const onChangeSignUpEmail = (e) => {
+  const onChangeSignUpEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpEmail(e.target.value);
   };
-  const onChangeSignUpPassword = (e) => {
+  const onChangeSignUpPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpPassword(e.target.value);
   };
-  const onChangeSignUpName = (e) => {
+  const onChangeSignUpName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpName(e.target.value);
   };
-  const onChangeSignInEmail = (e) => {
+  const onChangeSignInEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignInEmail(e.target.value);
   };
-  const onChangeSignInPassword = (e) => {
+  const onChangeSignInPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignInPassword(e.target.value);
   };
 
@@ -347,7 +347,7 @@ export const PageHeader = ({ children }: Props) => {
         {signInIsOpen ? signInElement() : ''}
         {signUpIsOpen ? signUpElement() : ''}
         <Space>
-          <Button ghost onClick={toggleLanguage}>
+          <Button style={{ marginLeft: '50px' }} ghost onClick={toggleLanguage}>
             {language.toUpperCase()}
           </Button>
         </Space>

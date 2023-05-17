@@ -1,15 +1,17 @@
 import React from 'react';
-import './Main.css';
 import { Button, Input, notification } from 'antd';
 import { InputStatus } from 'antd/es/_util/statusUtils';
-import githubService from '../../service/GithubService';
-import CodeEditor from '@uiw/react-textarea-code-editor';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
-import {ResponseView} from "../../components/ResponseView";
+import CodeEditor from '@uiw/react-textarea-code-editor';
+import './Main.css';
+
+import githubService from '../../service/GithubService';
+
+import { ResponseView } from '../../components/ResponseView';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export const Main = () => {
-  const REQUEST_ERROR_MESSAGE = 'Something wrong';
-  const REQUEST_OK_MESSAGE = 'Request received';
+  const editor = useLanguage('editor');
 
   const [graphQLRequest, setGraphQLRequest] = React.useState(`__typename ## Placeholder value`);
   const [githubToken, setGithubToken] = React.useState<InputStatus>('');
@@ -26,7 +28,7 @@ export const Main = () => {
   const openErrorNotification = () => {
     api.error({
       message: `Error`,
-      description: `${REQUEST_ERROR_MESSAGE}`,
+      description: `${editor?.request_error_message}`,
       placement: 'topRight',
     });
   };
@@ -34,7 +36,7 @@ export const Main = () => {
   const openOkNotification = () => {
     api.success({
       message: `OK`,
-      description: `${REQUEST_OK_MESSAGE}`,
+      description: `${editor?.request_ok_message}`,
       placement: 'topRight',
     });
   };
@@ -72,17 +74,16 @@ export const Main = () => {
       {!validateGithubToken && (
         <div style={{ textAlign: 'center', alignItems: 'center' }}>
           <span>
-            Before proceeding further please validate your token. To generate token refer{' '}
-            <a href="https://github.com/settings/tokens">this</a>.
+            {editor?.validate} <a href="https://github.com/settings/tokens"> {editor?.this}???</a>.
           </span>
           <Input
             status={githubToken}
-            placeholder="Token"
+            placeholder={editor?.token}
             style={{ borderWidth: '2px' }}
             onChange={onChangeGithubToken}
           />
           <Button type="primary" onClick={accessTokenSubmit}>
-            Submit
+            {editor?.submit}
           </Button>
         </div>
       )}
@@ -91,12 +92,12 @@ export const Main = () => {
           <div className="wrapper">
             <div id="codeEditor">
               <div style={{ textAlign: 'center', fontSize: 20, borderRadius: '10px' }}>
-                <span>Request</span>
+                <span>{editor?.request}</span>
               </div>
               <CodeEditor
                 value={graphQLRequest}
                 language="js"
-                placeholder="Please enter GraphQL"
+                placeholder={editor?.enter_graphql}
                 onChange={(evn) => setGraphQLRequest(evn.target.value)}
                 padding={10}
                 style={{
@@ -110,12 +111,12 @@ export const Main = () => {
               />
             </div>
             <div id="response">
-              <ResponseView res={response}/>
+              <ResponseView res={response} />
             </div>
           </div>
           <div style={{ textAlign: 'center', padding: '20px' }}>
             <Button type="primary" onClick={requestSubmit}>
-              Send
+              {editor?.send}
             </Button>
           </div>
         </>
