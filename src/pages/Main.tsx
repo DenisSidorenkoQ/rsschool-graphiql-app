@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 export const Main = () => {
   return (
     <>
-      <span>Main page</span>
+        <span>Main page</span>
     </>
   );
 };
