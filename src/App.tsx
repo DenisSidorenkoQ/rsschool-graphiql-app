@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Welcome } from './pages/Welcome/Welcome';
 import './App.css';
 import { PageHeader } from './components/PageHeader';
-import { Main } from './pages/Main';
+import { Main } from './pages/Main/Main';
 import { PageFooter } from './components/PageFooter';
 import { Error } from './pages/Error/Error';
 import { useAuthState } from 'react-firebase-hooks/auth';
