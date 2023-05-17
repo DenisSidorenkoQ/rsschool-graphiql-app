@@ -1,22 +1,18 @@
 import axios from 'axios';
 
 class GithubService {
-  validToken = (token: string): Promise<boolean> => {
-    return axios
-      .get(`https://api.github.com/`, {
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        return response.status === 200;
-      });
+  validToken = async (token: string): Promise<boolean> => {
+    const response = await axios.get(`https://api.github.com/`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    });
+    return response.status === 200;
   };
 
-  sendGraphQl = (body: JSON): Promise<boolean> => {
-    return axios.post(`https://api.github.com/graphql`, { body }).then((response) => {
-      return response.data;
-    });
+  sendGraphQl = async (body: JSON): Promise<boolean> => {
+    const response = await axios.post(`https://api.github.com/graphql`, { body });
+    return response.data;
   };
 }
 
