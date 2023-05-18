@@ -5,21 +5,21 @@ import { useNavigate } from 'react-router-dom';
 import { InputStatus } from 'antd/es/_util/statusUtils';
 import { auth, logInWithEmailAndPassword, logout, registerWithEmailAndPassword } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { LangContext } from '../context/lang';
+import { useLanguage } from '../hooks/useLanguage';
 
 interface Props {
   children: ReactNode;
 }
 
 export const PageHeader = ({ children }: Props) => {
+  const { language, toggleLanguage } = React.useContext(LangContext);
   const navigate = useNavigate();
 
   const STANDARD_COLOR = 'Indigo';
   const SCROLL_COLOR = 'Blue';
   const STANDARD_HEADER_HEIGHT = '70px';
   const SCROLL_HEADER_HEIGHT = '51px';
-  const PASSWORD_ERROR_MESSAGE =
-    'Minimum 8 symbols \nAt least one letter, one digit, one special character';
-  const EMAIL_ERROR_MESSAGE = 'Incorrect email address';
   const SIGN_IN_ERROR_STATUS = 'User not exist';
   const SIGN_IN_OK_STATUS = 'Ok';
   const SIGN_UP_ERROR_STATUS = 'User already exists';
@@ -47,6 +47,9 @@ export const PageHeader = ({ children }: Props) => {
   const [signInPassword, setSignInPassword] = useState('');
   const [signInResult, setSignInResult] = useState(0);
 
+  const login = useLanguage('login');
+  const common = useLanguage('common');
+
   useEffect(() => {
     setSignInPasswordStatus('');
     setSignInEmailStatus('');
@@ -59,19 +62,19 @@ export const PageHeader = ({ children }: Props) => {
     setSignUpResult(0);
   }, [signUpIsOpen]);
 
-  const onChangeSignUpEmail = (e) => {
+  const onChangeSignUpEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpEmail(e.target.value);
   };
-  const onChangeSignUpPassword = (e) => {
+  const onChangeSignUpPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpPassword(e.target.value);
   };
-  const onChangeSignUpName = (e) => {
+  const onChangeSignUpName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpName(e.target.value);
   };
-  const onChangeSignInEmail = (e) => {
+  const onChangeSignInEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignInEmail(e.target.value);
   };
-  const onChangeSignInPassword = (e) => {
+  const onChangeSignInPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignInPassword(e.target.value);
   };
 
@@ -145,7 +148,7 @@ export const PageHeader = ({ children }: Props) => {
           }}
         >
           <Space direction="vertical">
-            <h1>Sign In</h1>
+            <h1>{login?.sign_in}</h1>
             <Input
               status={signInEmailStatus}
               placeholder="Email"
@@ -154,7 +157,7 @@ export const PageHeader = ({ children }: Props) => {
             />
             {signInEmailStatus !== '' && (
               <Alert
-                message={EMAIL_ERROR_MESSAGE}
+                message={login?.incorrect_email_address}
                 type="error"
                 showIcon
                 style={{ height: '30px' }}
@@ -162,13 +165,13 @@ export const PageHeader = ({ children }: Props) => {
             )}
             <Input
               status={signInPasswordStatus}
-              placeholder="Password"
+              placeholder={login?.password}
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignInPassword}
             />
             {signInPasswordStatus !== '' && (
               <Alert
-                message={PASSWORD_ERROR_MESSAGE}
+                message={login?.incorrect_password}
                 type="error"
                 showIcon
                 style={{ height: '50px', whiteSpace: 'pre-wrap' }}
@@ -191,7 +194,7 @@ export const PageHeader = ({ children }: Props) => {
               />
             )}
             <Button type="primary" onClick={signInSubmit}>
-              Submit
+              {login?.submit}
             </Button>
           </Space>
         </Card>
@@ -210,22 +213,22 @@ export const PageHeader = ({ children }: Props) => {
           }}
         >
           <Space direction="vertical">
-            <h1>Sign Up</h1>
+            <h1>{login?.sign_up}</h1>
             <Input
               status={signUpNameStatus}
-              placeholder="Name"
+              placeholder={login?.name}
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpName}
             />
             <Input
               status={signUpEmailStatus}
-              placeholder="Email"
+              placeholder={login?.email}
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpEmail}
             />
             {signUpEmailStatus !== '' && (
               <Alert
-                message={EMAIL_ERROR_MESSAGE}
+                message={login?.incorrect_email_address}
                 type="error"
                 showIcon
                 style={{ height: '30px' }}
@@ -233,13 +236,13 @@ export const PageHeader = ({ children }: Props) => {
             )}
             <Input
               status={signUpPasswordStatus}
-              placeholder="Password"
+              placeholder={login?.password}
               style={{ borderWidth: '2px' }}
               onChange={onChangeSignUpPassword}
             />
             {signUpPasswordStatus !== '' && (
               <Alert
-                message={PASSWORD_ERROR_MESSAGE}
+                message={login?.incorrect_password}
                 type="error"
                 showIcon
                 style={{ height: '50px', whiteSpace: 'pre-wrap' }}
@@ -262,7 +265,7 @@ export const PageHeader = ({ children }: Props) => {
               />
             )}
             <Button type="primary" onClick={signUpSubmit}>
-              Submit
+              {login?.submit}
             </Button>
           </Space>
         </Card>
@@ -305,7 +308,7 @@ export const PageHeader = ({ children }: Props) => {
                 navigate('/main');
               }}
             >
-              Go to Main Page
+              {common?.main_page}
             </Button>
             <Button
               ghost
@@ -314,7 +317,7 @@ export const PageHeader = ({ children }: Props) => {
                 navigate('/');
               }}
             >
-              Logout
+              {common?.logout}
             </Button>
           </div>
         ) : (
@@ -327,7 +330,7 @@ export const PageHeader = ({ children }: Props) => {
                 if (!signInIsOpen) setSignInIsOpen(true);
               }}
             >
-              Sign In
+              {login?.sign_in}
             </Button>
             <Button
               ghost
@@ -337,12 +340,17 @@ export const PageHeader = ({ children }: Props) => {
                 if (!signUpIsOpen) setSignUpIsOpen(true);
               }}
             >
-              Sign Up
+              {login?.sign_up}
             </Button>
           </Space>
         )}
         {signInIsOpen ? signInElement() : ''}
         {signUpIsOpen ? signUpElement() : ''}
+        <Space>
+          <Button style={{ marginLeft: '50px' }} ghost onClick={toggleLanguage}>
+            {language.toUpperCase()}
+          </Button>
+        </Space>
       </Header>
       <Content style={{ background: 'white' }}>
         <div className="site-layout-content" style={{ background: 'white' }}>

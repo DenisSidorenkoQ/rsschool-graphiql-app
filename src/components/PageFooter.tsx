@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Avatar, Col, Row, Space, Typography, theme, Image, Layout } from 'antd';
 import { Content, Footer } from 'antd/lib/layout/layout';
+
 import den from '../assets/den.webp';
 import max from '../assets/max.png';
 import al from '../assets/al.png';

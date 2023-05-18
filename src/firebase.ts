@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const logInWithEmailAndPassword = async (email, password): Promise<number> => {
+const logInWithEmailAndPassword = async (email: string, password: string): Promise<number> => {
   return await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       localStorage.setItem('token', userCredential.user.uid);
@@ -32,7 +32,11 @@ const logInWithEmailAndPassword = async (email, password): Promise<number> => {
     });
 };
 
-const registerWithEmailAndPassword = async (name, email, password): Promise<number> => {
+const registerWithEmailAndPassword = async (
+  name: string,
+  email: string,
+  password: string
+): Promise<number> => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
