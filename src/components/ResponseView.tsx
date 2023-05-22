@@ -4,7 +4,7 @@ import JsonFormatter from 'react-json-formatter';
 import { useLanguage } from '../hooks/useLanguage';
 
 type ResponsePropsType = {
-  res: JSON;
+  res: string;
 };
 
 export const ResponseView = (props: ResponsePropsType) => {
