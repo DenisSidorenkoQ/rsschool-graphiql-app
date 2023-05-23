@@ -50,20 +50,16 @@ export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
     });
   };
 
-  const showDrawerArgs = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    type: string,
-    fields?: string
-  ) => {
+  const showDrawerArgs = (event: React.MouseEvent<HTMLButtonElement>, type: string) => {
     setQueryNameArgs(event.currentTarget.innerText);
     if (type === 'args') {
       const args = schemaQuery?.fields.find((el) => el.name === event.currentTarget.innerText);
-      setCurrentArgs(args[type]);
+      if (args) setCurrentArgs(args[type]!);
     }
 
     if (type === 'type') {
       const args = schemaMutation?.fields.find((el) => el.name === event.currentTarget.innerText);
-      setCurrentArgs(args[type].fields);
+      if (args) setCurrentArgs(args[type]!.fields);
     }
     setOpenArgs(true);
   };
@@ -103,21 +99,14 @@ export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
               key={index}
               el={el}
               index={index}
-              showDrawerArgs={(e: React.MouseEvent<HTMLButtonElement>) => showDrawerArgs(e, 'args')}
+              showDrawerArgs={(e) => showDrawerArgs(e, 'args')}
             />
           ))
         : schemaMutation &&
           isSchemaMutation &&
           !isLoading &&
           schemaMutation.fields.map((el, index) => (
-            <MutationFields
-              key={index}
-              el={el}
-              index={index}
-              showDrawerArgs={(e: React.MouseEvent<HTMLButtonElement>) =>
-                showDrawerArgs(e, 'type', 'fields')
-              }
-            />
+            <MutationFields key={index} el={el} showDrawerArgs={(e) => showDrawerArgs(e, 'type')} />
           ))}
       {openArgs && (
         <Args

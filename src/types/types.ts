@@ -38,7 +38,8 @@ export interface QueryFieldsProps {
   key: number;
   el: SchemaQueryField;
   index: number;
-  showDrawerArgs: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  showDrawerArgs: React.MouseEventHandler<HTMLAnchorElement> &
+    React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export interface ArgsProps {
@@ -46,4 +47,10 @@ export interface ArgsProps {
   queryNameArgs: string;
   openArgs: boolean;
   closeArgs: () => void;
+}
+
+export interface MutationFieldsProps {
+  el: SchemaMutationField;
+  showDrawerArgs: React.MouseEventHandler<HTMLAnchorElement> &
+    React.MouseEventHandler<HTMLButtonElement>;
 }

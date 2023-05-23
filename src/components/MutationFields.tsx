@@ -1,26 +1,19 @@
 import { Button, List, Row, Typography } from 'antd';
 import React from 'react';
+import { MutationFieldsProps } from 'types/types';
 
-export const MutationFields = (props) => {
+export const MutationFields = (props: MutationFieldsProps) => {
   return (
     <Row>
-      <Button
-        type="link"
-        onClick={(e) => props.showDrawerArgs(e)}
-        style={{ padding: 0 }}
-      >
+      <Button type="link" onClick={props.showDrawerArgs} style={{ padding: 0 }}>
         {props.el.name}
       </Button>
 
       <List style={{ paddingTop: 5 }}>
         (
-        {props.el.type?.fields.map((el, index) => {
-          return (
-            <li key={index}>
-              <Typography.Text type="success">{props.el.name}</Typography.Text>
-            </li>
-          );
-        })}
+        <List.Item>
+          <Typography.Text type="success">{props.el.name}</Typography.Text>
+        </List.Item>
         ):<Typography.Text type="warning">{props.el.description}</Typography.Text>
       </List>
     </Row>

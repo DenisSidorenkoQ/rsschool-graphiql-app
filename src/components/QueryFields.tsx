@@ -5,25 +5,15 @@ import { QueryFieldsProps } from 'types/types';
 export const QueryFields = (props: QueryFieldsProps) => {
   return (
     <Row>
-      <Button
-        type="link"
-        onClick={(e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLAnchorElement>) =>
-          props.showDrawerArgs(e)
-        }
-        style={{ padding: 0 }}
-      >
+      <Button type="link" onClick={props.showDrawerArgs} style={{ padding: 0 }}>
         {props.el.name}
       </Button>
 
       <List style={{ paddingTop: 5 }}>
         (
-        {props.el.args.map((el, index) => {
-          return (
-            <li key={index}>
-              <Typography.Text type="success">{props.el.name}</Typography.Text>
-            </li>
-          );
-        })}
+        <List.Item>
+          <Typography.Text type="success">{props.el.name}</Typography.Text>
+        </List.Item>
         ):<Typography.Text type="warning">{props.el.description}</Typography.Text>
       </List>
     </Row>
