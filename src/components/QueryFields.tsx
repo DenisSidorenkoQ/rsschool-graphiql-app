@@ -14,7 +14,7 @@ export const QueryFields = (props: QueryFieldsProps) => {
         <List.Item>
           <Typography.Text type="success">{props.el.name}</Typography.Text>
         </List.Item>
-        ):<Typography.Text type="warning">{props.el.description}</Typography.Text>
+        ) : <Typography.Text type="warning">{props.el.description}</Typography.Text>
         <Divider />
       </List>
     </Row>
