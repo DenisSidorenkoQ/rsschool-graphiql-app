@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input, notification } from 'antd';
+import { Button, Input, Row, notification } from 'antd';
 import { InputStatus } from 'antd/es/_util/statusUtils';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import CodeEditor from '@uiw/react-textarea-code-editor';
@@ -9,6 +9,7 @@ import githubService from '../../service/GithubService';
 
 import { ResponseView } from '../../components/ResponseView';
 import { useLanguage } from '../../hooks/useLanguage';
+import { DocumentationDrawer } from '../../components/DocumentationDrawer';
 
 export const Main = () => {
   const editor = useLanguage('editor');
@@ -18,6 +19,8 @@ export const Main = () => {
   const [validateGithubToken, setValidateGithubToken] = React.useState(false);
   const [response, setResponse] = React.useState('');
   const [api, contextHolder] = notification.useNotification();
+
+  const [openDrawer, setOpenDrawer] = React.useState(false);
 
   const client = new ApolloClient({
     uri: 'https://api.github.com/graphql',
@@ -68,6 +71,14 @@ export const Main = () => {
     }
   };
 
+  const onShowDrawer = () => {
+    setOpenDrawer(true);
+  };
+
+  const onCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
   return (
     <>
       {contextHolder}
@@ -89,6 +100,15 @@ export const Main = () => {
       )}
       {validateGithubToken && (
         <>
+          <Row align="middle" justify="end">
+            <Button onClick={onShowDrawer}>Docs</Button>
+            <DocumentationDrawer
+              openDrawer={openDrawer}
+              onCloseDrawer={onCloseDrawer}
+              githubToken={githubToken}
+            />
+          </Row>
+
           <div className="wrapper">
             <div id="codeEditor">
               <div style={{ textAlign: 'center', fontSize: 20, borderRadius: '10px' }}>
