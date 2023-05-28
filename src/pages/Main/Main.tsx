@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Input, Row, Tabs, notification } from 'antd';
 import { InputStatus } from 'antd/es/_util/statusUtils';
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
-import CodeEditor from '@uiw/react-textarea-code-editor';
 import './Main.css';
 
 import githubService from '../../service/GithubService';
@@ -17,8 +15,8 @@ export const Main = () => {
   const editor = useLanguage('editor');
 
   const [graphQLRequest, setGraphQLRequest] = React.useState(`__typename ## Placeholder value`);
+  const [githubToken, setGithubToken] = React.useState(localStorage.getItem('githubToken'));
   const [variables, setVariables] = React.useState(`{}`);
-  const [githubToken, setGithubToken] = React.useState<InputStatus>('');
   const [validateGithubToken, setValidateGithubToken] = React.useState(false);
   const [response, setResponse] = React.useState('');
   const [api, contextHolder] = notification.useNotification();
@@ -58,6 +56,7 @@ export const Main = () => {
   const accessTokenSubmit = async () => {
     if (await githubService.validToken(githubToken)) {
       setValidateGithubToken(true);
+      localStorage.setItem('githubToken', githubToken);
     } else {
       setValidateGithubToken(false);
     }
@@ -139,7 +138,7 @@ export const Main = () => {
             {editor?.validate} <a href="https://github.com/settings/tokens"> {editor?.link}</a>.
           </span>
           <Input
-            status={githubToken}
+            value={githubToken}
             placeholder={editor?.token}
             style={{ borderWidth: '2px' }}
             onChange={onChangeGithubToken}
