@@ -1,0 +1,8 @@
+{
+  "welcome": "Welcome to our project page!",
+  "we_are": "We are",
+  "latest_project": "and we are excited to present our latest project: a GraphiQL playground/IDE for GraphQL requests.",
+  "team": "Our team consists of experienced developers with a passion for creating innovative solutions to complex problems. We believe that GraphQL is the future of APIs, and we are committed to building tools that make it easier for developers to work with this powerful technology.",
+  "project": "This project is part of the RS SCHOOL React Course, an intensive training program designed to help developers master the latest front-end technologies. As part of this program, we have been working hard to create a tool that will help developers of all levels to experiment with GraphQL queries and learn more about this exciting technology.",
+  "think": "Whether you are an experienced GraphQL developer or just getting started with this powerful tool, we believe that our GraphiQL playground/IDE will be a valuable addition to your toolkit. So take a look around, try out some queries, and let us know what you think!"
+}
