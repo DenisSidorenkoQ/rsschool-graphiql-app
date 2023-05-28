@@ -1,0 +1,10 @@
+{
+  "sign_in": "Sign in",
+  "sign_up": "Sign up",
+  "submit": "Submit",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "incorrect_email_address": "Incorrect email address",
+  "incorrect_password": "Minimum 8 symbols \nAt least one letter, one digit, one special character"
+}
