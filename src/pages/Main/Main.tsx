@@ -101,7 +101,7 @@ export const Main = () => {
       {validateGithubToken && (
         <>
           <Row align="middle" justify="end">
-            <Button onClick={onShowDrawer}>Docs</Button>
+            <Button onClick={onShowDrawer}>{editor?.docs}</Button>
             <DocumentationDrawer
               openDrawer={openDrawer}
               onCloseDrawer={onCloseDrawer}

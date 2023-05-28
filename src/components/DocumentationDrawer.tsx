@@ -10,6 +10,7 @@ import {
 import { QueryFields } from './QueryFields';
 import { MutationFields } from './MutationFields';
 import { Args } from './Args';
+import { useLanguage } from '../hooks/useLanguage';
 
 export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
   const [schemaQuery, setSchemaQuery] = useState<SchemaQuery | null>(null);
@@ -22,6 +23,8 @@ export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
   const [queryNameArgs, setQueryNameArgs] = useState('');
   const [currentArgs, setCurrentArgs] = useState<Array<SchemaQueryFieldArgs>>([]);
   const [openArgs, setOpenArgs] = useState(false);
+
+  const editor = useLanguage('editor');
 
   const queryType =
     'query {__schema { queryType {fields {name: name args {name description}description}}}}';
@@ -70,7 +73,7 @@ export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
 
   return (
     <Drawer
-      title="Documentation Explorer"
+      title={editor?.documentation}
       placement="right"
       width={500}
       onClose={props.onCloseDrawer}

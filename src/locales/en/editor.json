@@ -8,5 +8,8 @@
   "token": "Token",
   "submit": "Submit",
   "enter_graphql": "Please enter GraphQL",
-  "send": "Send"
+  "send": "Send",
+
+  "documentation": "Documentation Explorer",
+  "docs": "Docs"
 }
