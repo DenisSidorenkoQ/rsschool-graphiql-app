@@ -53,7 +53,7 @@ export const DocumentationDrawer = (props: DocumentationDrawerProps) => {
     });
   };
 
-  const showDrawerArgs = (event: React.MouseEvent<HTMLButtonElement>, type: string) => {
+  const showDrawerArgs = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLAnchorElement, MouseEvent>, type: string) => {
     setQueryNameArgs(event.currentTarget.innerText);
     if (type === 'args') {
       const args = schemaQuery?.fields.find((el) => el.name === event.currentTarget.innerText);

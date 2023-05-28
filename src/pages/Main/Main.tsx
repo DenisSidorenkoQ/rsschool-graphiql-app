@@ -16,7 +16,7 @@ export const Main = () => {
   const editor = useLanguage('editor');
 
   const [graphQLRequest, setGraphQLRequest] = React.useState(`__typename ## Placeholder value`);
-  const [githubToken, setGithubToken] = React.useState(localStorage.getItem('githubToken'));
+  const [githubToken, setGithubToken] = React.useState(localStorage.getItem('githubToken') || '');
   const [variables, setVariables] = React.useState(`{}`);
   const [validateGithubToken, setValidateGithubToken] = React.useState(false);
   const [response, setResponse] = React.useState('');
@@ -50,7 +50,7 @@ export const Main = () => {
     });
   };
 
-  const onChangeGithubToken = (e) => {
+  const onChangeGithubToken = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGithubToken(e.target.value);
   };
 
