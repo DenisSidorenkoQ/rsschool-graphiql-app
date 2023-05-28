@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Input, Row, Tabs, notification } from 'antd';
-import { InputStatus } from 'antd/es/_util/statusUtils';
+import CodeEditor from '@uiw/react-textarea-code-editor';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import './Main.css';
 
 import githubService from '../../service/GithubService';
