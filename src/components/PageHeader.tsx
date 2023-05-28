@@ -80,8 +80,9 @@ export const PageHeader = ({ children }: Props) => {
 
   const signInSubmit = async () => {
     if (validationSignIn()) {
-      setSignInResult(await logInWithEmailAndPassword(signInEmail, signInPassword));
-      if (signInResult === 1) {
+      const result = await logInWithEmailAndPassword(signInEmail, signInPassword);
+      setSignInResult(result);
+      if (result === 1) {
         setSignInIsOpen(false);
         navigate('/main');
       }
@@ -90,8 +91,9 @@ export const PageHeader = ({ children }: Props) => {
 
   const signUpSubmit = async () => {
     if (validationSignUp()) {
-      setSignUpResult(await registerWithEmailAndPassword(signUpName, signUpEmail, signUpPassword));
-      if (signUpResult === 1) {
+      const result = await registerWithEmailAndPassword(signUpName, signUpEmail, signUpPassword);
+      setSignUpResult(result);
+      if (result === 1) {
         setSignUpIsOpen(false);
       }
     }
