@@ -83,6 +83,7 @@ export const PageHeader = ({ children }: Props) => {
       setSignInResult(await logInWithEmailAndPassword(signInEmail, signInPassword));
       if (signInResult === 1) {
         setSignInIsOpen(false);
+        navigate('/main');
       }
     }
   };
