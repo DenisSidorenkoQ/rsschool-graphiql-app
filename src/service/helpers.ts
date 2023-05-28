@@ -1,5 +1,5 @@
-export const makeRequest = (query: string, githubToken: string) => {
-  return fetch('https://api.github.com/graphql', {
+export const makeRequest = async (query: string, githubToken: string) => {
+  const res = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -8,5 +8,6 @@ export const makeRequest = (query: string, githubToken: string) => {
     body: JSON.stringify({
       query,
     }),
-  }).then((res) => res.json());
+  });
+  return await res.json();
 };

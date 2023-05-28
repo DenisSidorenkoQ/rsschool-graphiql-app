@@ -11,5 +11,7 @@
   "send": "Send",
 
   "documentation": "Documentation Explorer",
-  "docs": "Docs"
+  "docs": "Docs",
+  "variables": "Variables",
+  "headers": "Headers"
 }
