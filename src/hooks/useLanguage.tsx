@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 
 import { LangContext } from '../context/lang';
 
-type Locale = Record<string, string>;
+type Locales = Record<string, string>;
 
-export const useLanguage = (file: string): Locale => {
+export const useLanguage = (file: string): Locales => {
   const { language } = useContext(LangContext);
-  const [locale, setlocale] = useState<Locale>({});
+  const [locale, setlocale] = useState<Locales>({});
 
   useEffect(() => {
     const getLocale = async () => {

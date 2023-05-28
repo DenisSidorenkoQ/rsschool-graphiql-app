@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input, Row, notification } from 'antd';
+import { Button, Input, Row, Tabs, notification } from 'antd';
 import { InputStatus } from 'antd/es/_util/statusUtils';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import CodeEditor from '@uiw/react-textarea-code-editor';
@@ -11,10 +11,13 @@ import { ResponseView } from '../../components/ResponseView';
 import { useLanguage } from '../../hooks/useLanguage';
 import { DocumentationDrawer } from '../../components/DocumentationDrawer';
 
+const headerGraphqlRequest = `{'Content-type': 'application/json'}`;
+
 export const Main = () => {
   const editor = useLanguage('editor');
 
   const [graphQLRequest, setGraphQLRequest] = React.useState(`__typename ## Placeholder value`);
+  const [variables, setVariables] = React.useState(`{}`);
   const [githubToken, setGithubToken] = React.useState<InputStatus>('');
   const [validateGithubToken, setValidateGithubToken] = React.useState(false);
   const [response, setResponse] = React.useState('');
@@ -27,6 +30,10 @@ export const Main = () => {
     cache: new InMemoryCache(),
     headers: { Authorization: `bearer ${githubToken}` },
   });
+
+  const onChangeVariables = React.useCallback((value: string) => {
+    setVariables(value);
+  }, []);
 
   const openErrorNotification = () => {
     api.error({
@@ -63,6 +70,7 @@ export const Main = () => {
           query: gql`
             ${graphQLRequest}
           `,
+          variables: JSON.parse(variables),
         })
         .then((response) => setResponse(response.data));
       openOkNotification();
@@ -78,6 +86,49 @@ export const Main = () => {
   const onCloseDrawer = () => {
     setOpenDrawer(false);
   };
+
+  const tabsItems = [
+    {
+      key: '1',
+      label: `${editor?.variables}`,
+      children: (
+        <CodeEditor
+          value={variables}
+          language="graphql"
+          onChange={(evn) => onChangeVariables(evn.target.value)}
+          padding={10}
+          style={{
+            fontSize: 14,
+            backgroundColor: 'oldlace',
+            border: '2px solid black',
+            borderRadius: '10px',
+            fontFamily:
+              'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+          }}
+        />
+      ),
+    },
+    {
+      key: '2',
+      label: `${editor?.headers}`,
+      children: (
+        <CodeEditor
+          value={headerGraphqlRequest}
+          language="graphql"
+          readOnly={true}
+          padding={10}
+          style={{
+            fontSize: 14,
+            backgroundColor: 'oldlace',
+            border: '2px solid black',
+            borderRadius: '10px',
+            fontFamily:
+              'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+          }}
+        />
+      ),
+    },
+  ];
 
   return (
     <>
@@ -101,7 +152,7 @@ export const Main = () => {
       {validateGithubToken && (
         <>
           <Row align="middle" justify="end">
-            <Button onClick={onShowDrawer}>Docs</Button>
+            <Button onClick={onShowDrawer}>{editor?.docs}</Button>
             <DocumentationDrawer
               openDrawer={openDrawer}
               onCloseDrawer={onCloseDrawer}
@@ -116,7 +167,7 @@ export const Main = () => {
               </div>
               <CodeEditor
                 value={graphQLRequest}
-                language="js"
+                language="graphql"
                 placeholder={editor?.enter_graphql}
                 onChange={(evn) => setGraphQLRequest(evn.target.value)}
                 padding={10}
@@ -129,6 +180,7 @@ export const Main = () => {
                     'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
                 }}
               />
+              <Tabs centered items={tabsItems} />
             </div>
             <div id="response">
               <ResponseView res={response} />
